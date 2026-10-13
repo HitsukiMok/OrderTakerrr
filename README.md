@@ -459,9 +459,8 @@ git status
 ### Start a branch
 
 ```powershell
-git switch main
-git pull --ff-only origin main
-git switch -c member-2-pizza
+git checkout main
+git checkout -b <branch-name>
 ```
 
 Recommended branch names:
@@ -482,7 +481,7 @@ Example for Member 2:
 git status
 git add .\PIZZA.java
 git commit -m "Implement regular pizza pricing"
-git push -u origin member-2-pizza
+git push
 ```
 
 Add only assigned files. After pushing, open GitHub, select **Compare & pull request**, target `main`, describe what was tested, and request Member 1's review.
