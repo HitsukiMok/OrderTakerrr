@@ -1,0 +1,120 @@
+import java.util.Scanner;
+
+public class TAKE_ORDER {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("PIZZA ORDERING SYSTEM");
+        System.out.println("Enter Pizza Type:");
+        System.out.println("1. Regular Pizza");
+        System.out.println("2. Special Pizza");
+        
+        int choice = 0;
+        while (true) {
+            System.out.print("Choice: ");
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice == 1 || choice == 2) {
+                    break;
+                }
+            } else {
+                scanner.next();
+            }
+            System.out.println("Invalid choice. Please enter 1 or 2.");
+        }
+
+        PizzaBase pizza = (choice == 2) ? new SPECIAL_PIZZA() : new PIZZA();
+        String toppings = "";
+        while (true) {
+            System.out.print("Enter Toppings (" + PIZZA.TOPPING_PEPPERONI + " / " + PIZZA.TOPPING_HAM_AND_CHEESE + " / " + PIZZA.TOPPING_HAWAIIAN + "): ");
+            toppings = scanner.nextLine().trim();
+            if (toppings.equalsIgnoreCase(PIZZA.TOPPING_PEPPERONI)){
+                toppings = PIZZA.TOPPING_PEPPERONI;
+                break;
+            } else if (toppings.equalsIgnoreCase(PIZZA.TOPPING_HAM_AND_CHEESE)){
+                toppings = PIZZA.TOPPING_HAM_AND_CHEESE;
+                break;
+            } else if (toppings.equalsIgnoreCase(PIZZA.TOPPING_HAWAIIAN)) {
+                toppings = PIZZA.TOPPING_HAWAIIAN;
+                    break;
+            }
+            System.out.println("Invalid topping. Accept only Pepperoni, Ham and Cheese, or Hawaiian.");
+        }
+        pizza.setToppings(toppings);
+
+        int diameter = 0;
+        while (true) {
+            System.out.print("Enter Diameter in inches: ");
+            if (scanner.hasNextInt()) {
+                diameter = scanner.nextInt();
+                scanner.nextLine();
+                if (diameter > 0) {
+                    break;
+                }
+            } else {
+                scanner.next();
+            }
+            System.out.println("Diameter must be greater than zero.");
+        }
+        pizza.setDiameter(diameter);
+
+        int howMany = 0;
+        while (true) {
+            System.out.print("Enter How Many?: ");
+            if (scanner.hasNextInt()) {
+                howMany = scanner.nextInt();
+                scanner.nextLine();
+                if (howMany > 0) {
+                    break;
+                }
+            } else {
+                scanner.next();
+            }
+            System.out.println("Quantity must be greater than zero.");
+        }
+        pizza.setHowMany(howMany);
+
+        String discount = "";
+        while (true) {
+            System.out.print("Enter Type of Discount (" + PIZZA.DISCOUNT_SENIOR_CITIZEN + " / " + PIZZA.DISCOUNT_VIP_CARD + " / " + PIZZA.DISCOUNT_NONE + "): ");
+            discount = scanner.nextLine().trim();
+            if (discount.equalsIgnoreCase(PIZZA.DISCOUNT_SENIOR_CITIZEN)){
+                discount = PIZZA.DISCOUNT_SENIOR_CITIZEN;
+                break;
+            } else if (discount.equalsIgnoreCase(PIZZA.DISCOUNT_VIP_CARD)){
+                discount = PIZZA.DISCOUNT_VIP_CARD;
+                break;
+            } else if (discount.equalsIgnoreCase(PIZZA.DISCOUNT_NONE)){
+                discount = PIZZA.DISCOUNT_NONE;
+                break;
+            }
+            System.out.println("Invalid discount. Accept only Senior Citizen, VIPCard, or No Discount.");
+        }
+        pizza.setDiscount(discount);
+        pizza.calculatePrice();
+
+        BILL_ORDER bill = new BILL_ORDER();
+        double amountDue = bill.OUT(pizza);
+
+        double amountReceived = 0.0;
+        while (true) {
+            System.out.print("Enter Amount Received: PHP ");
+            if (scanner.hasNextDouble()) {
+                amountReceived = scanner.nextDouble();
+                scanner.nextLine();
+                if (amountReceived > amountDue) {
+                    break;
+                }
+            } else {
+                scanner.next();
+            }
+            System.out.println("Amount Received must be strictly greater than Amount Due.");
+        }
+
+        double change = amountReceived - amountDue;
+        System.out.printf("Change: PHP %.2f\n", change);
+
+        scanner.close();
+    }
+}
